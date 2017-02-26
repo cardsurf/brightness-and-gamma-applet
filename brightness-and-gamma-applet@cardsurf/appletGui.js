@@ -16,67 +16,6 @@ const AppletConstants = AppletDirectory.appletConstants;
 
 
 
-function AppletGui(applet_size) {
-    this._init(applet_size);
-};
-
-AppletGui.prototype = {
-
-    _init: function(applet_size) {
-
-        this.applet_size = applet_size;
-
-        this.actor = new St.BoxLayout();
-        this.icon = new St.Icon();
-
-        this._init_icon();
-        this._init_actor();
-    },
-
-    _init_icon: function() {
-        let size = this.applet_size * 0.85;
-        this.icon.set_icon_size(size);
-    },
-
-    _init_actor: function() {
-        this.actor.add(this.icon);
-    },
-
-    set_icon: function(icon_path) {
-        let icon_file = this._load_icon_file(icon_path);
-           this._set_gicon(icon_file);
-    },
-
-    _load_icon_file: function(icon_path) {
-        icon_path = this._remove_file_schema(icon_path);
-        icon_path = this._replace_tilde_with_home_directory(icon_path)
-        let icon_file = Gio.file_new_for_path(icon_path);
-        let icon_file = new Gio.FileIcon({ file: icon_file });
-        return icon_file;
-    },
-
-    _remove_file_schema: function (path) {
-        path = path.replace("file://", "");
-        return path;
-    },
-
-    _replace_tilde_with_home_directory: function (path) {
-        let home_directory = GLib.get_home_dir();
-        path = path.replace("~", home_directory);
-        return path;
-    },
-
-    _set_gicon: function(file_icon) {
-        this.icon.set_gicon(file_icon);
-    },
-
-};
-
-
-
-
-
-
 
 function RadioMenuItem(title, option_names) {
     this._init(title, option_names);
@@ -195,11 +134,6 @@ RadioMenuItem.prototype = {
         this.callback_option_clicked = callback_option_clicked;
     },
 };
-
-
-
-
-
 
 
 

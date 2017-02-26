@@ -40,13 +40,12 @@ function MyApplet(metadata, orientation, panel_height, instance_id) {
 };
 
 MyApplet.prototype = {
-    __proto__: Applet.Applet.prototype,
+    __proto__: Applet.IconApplet.prototype,
 
     _init: function(metadata, orientation, panel_height, instance_id) {
-        Applet.Applet.prototype._init.call(this, orientation, panel_height, instance_id);
+        Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
 
         this.panel_orientation = orientation;
-        this.applet_size = 10;
         this.applet_directory = this._get_applet_directory();
         this.values_directory = this.applet_directory + "values/";
         this.is_running = true;
@@ -58,7 +57,8 @@ MyApplet.prototype = {
         this.menu_item_screen = null;
         this.menu_item_output = null;
         this.menu_sliders = null;
-        this.applet_gui = null;
+        this.file_schema = "file://";
+        this.home_shortcut = "~";
         this.xrandr_name = "xrandr";
         this.randr_name = "RandR";
         this.xrandr_regex = new RegExp(this.xrandr_name, "i");
@@ -204,6 +204,7 @@ MyApplet.prototype = {
         this._init_screen_output();
         this._init_context_menu();
         this._init_menu_sliders();
+        this._init_gui();
         this._update_xrandr_startup();
 
         this.run();
@@ -344,7 +345,31 @@ MyApplet.prototype = {
     },
 
     set_gui_icon: function () {
-        this.applet_gui.set_icon(this.gui_icon_filepath);
+        this.set_gui_icon();
+    },
+
+    set_gui_icon: function () {
+        let path = this.remove_file_schema(this.gui_icon_filepath);
+        path = this.replace_tilde_with_home_directory(path);
+        let exists = this.file_exists(path);
+        if (exists) {
+            this.set_applet_icon_path(path);
+        }
+    },
+
+    remove_file_schema: function (path) {
+        path = path.replace(this.file_schema, "");
+        return path;
+    },
+
+    replace_tilde_with_home_directory: function (path) {
+        let home_directory = GLib.get_home_dir();
+        path = path.replace(this.home_shortcut, home_directory);
+        return path;
+    },
+
+    file_exists: function (path) {
+        return GLib.file_test(path, GLib.FileTest.EXISTS);
     },
 
     // Override
@@ -358,48 +383,8 @@ MyApplet.prototype = {
         this.is_running = false;
     },
 
-    // Override
-    on_panel_height_changed: function() {
-        this._init_gui();
-    },
-
-    // Override
-    on_orientation_changed: function(orientation) {
-        this.panel_orientation = orientation;
-        this._init_gui();
-    },
-
-    // Override
-    on_applet_added_to_panel: function(userEnabled) {
-        this._init_gui();
-    },
-
     _init_gui: function () {
-        this._init_applet_size();
-        this.applet_gui = new AppletGui.AppletGui(this.applet_size);
-        this.actor.destroy_all_children();
-        this.actor.add(this.applet_gui.actor, { x_align: St.Align.MIDDLE, y_align: St.Align.MIDDLE, y_fill: false });
         this.set_gui_icon();
-    },
-
-    _init_applet_size: function () {
-        this.applet_size = this.get_applet_size();
-    },
-
-    get_applet_size: function () {
-        return this.is_panel_horizontal() ? this.get_actor_height() : this.get_actor_width();
-    },
-
-    is_panel_horizontal: function () {
-        return this.panel_orientation == St.Side.TOP || this.panel_orientation == St.Side.BOTTOM;
-    },
-
-    get_actor_height: function () {
-        return this.panel.actor.get_height();
-    },
-
-    get_actor_width: function () {
-        return this.panel.actor.get_width();
     },
 
     _init_screen_outputs: function () {

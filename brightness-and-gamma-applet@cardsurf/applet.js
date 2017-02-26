@@ -345,10 +345,6 @@ MyApplet.prototype = {
     },
 
     set_gui_icon: function () {
-        this.set_gui_icon();
-    },
-
-    set_gui_icon: function () {
         let path = this.remove_file_schema(this.gui_icon_filepath);
         path = this.replace_tilde_with_home_directory(path);
         let exists = this.file_exists(path);

@@ -1,4 +1,4 @@
-#Brightness and gamma applet
+# Brightness and gamma applet
 An applet that sets brightness and gamma levels of a screen for Linux Mint Cinnamon
 
 ![Alt text](../master/screenshots/screenshot1.png "Brightness and gamma applet")
@@ -11,11 +11,11 @@ An applet that sets brightness and gamma levels of a screen for Linux Mint Cinna
  * Show: all values, brightness or gamma
  * Set: minimum and maximum value thresholds
 
-##Installation
+## Installation
 1. Extract .zip archive to ~/.local/share/cinnamon/applets
 2. Enable the applet in Cinnammon settings
 
-##Usage
+## Usage
 To specify a screen and an output:
 
 1. Right click on the applet

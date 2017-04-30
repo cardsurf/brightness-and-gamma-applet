@@ -21,3 +21,6 @@ To specify a screen and an output:
 1. Right click on the applet
 2. From "Screen" submenu click on a screen
 3. From "Output" submenu click on an output
+
+## Source code
+Browse the source of the applet in the [original repository](https://github.com/cardsurf/brightness-and-gamma-applet).

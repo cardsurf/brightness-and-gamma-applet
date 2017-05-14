@@ -13,7 +13,7 @@ An applet that sets brightness and gamma levels of a screen for Linux Mint Cinna
 
 ## Installation
 1. Extract .zip archive to ~/.local/share/cinnamon/applets
-2. Enable the applet in Cinnammon settings
+2. Enable the applet in Cinnamon settings
 
 ## Usage
 To specify a screen and an output:
